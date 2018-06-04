@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hangman</title>
+
+
+<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="assets/javascript/game.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+
+
+</head>
+<body>
+    
+<div class="page-header text1">
+  <h1>Hang MAN</h1>
+</div>
+
+<div class="jumbotron box1">
+
+
+<div class="panel panel-default text2">
+  <div class="panel-body">
+    <div class= "wins">Wins:
+    </div>
+    <div class="losses">Losses:
+        </div>
+  </div>
+</div>
+
+<div class="panel panel-default text3">
+  <div class="panel-body">
+        <form id="name-form">
+                <label for="word-input">The Word</label>
+                <input type="text" id="word-input">
+                <input type="button" id="add-word" value="Submit!">
+            </form>
+    <div id= "theWord">
+    </div>
+    <div id= "the-chosen-word-only-player-1-sees">
+      </div>
+
+    <div class="guesses">Number of guesses remaining:<span id="guesses-remaining"></span>
+        </div>
+        <div id= "Wrong letters-guessed">Letters guessed:<span id="guesses"></span>
+        </div>
+  </div>
+</div>
+
+</div>
+
+
+</body>
+</html>

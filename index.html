@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hangman</title>
+
+
+<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="assets/javascript/game.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+
+    
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header grey-back">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Enter your name to begin</h4>
+      </div>
+     
+      <div class="modal-body center-text open">
+          <form id="name-form">
+              <label for="name-input">Name</label>
+              <input type="text" id="name-input">
+              <input type="button" id="add-name" value="Submit!">
+          </form>
+      </div>     
+      </div>
+    </div>
+  </div>
+
+   <!-- Modal2 -->
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header grey-back">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+       
+        <div class="modal-body center-text open">
+                <label for="name-input">Choose:</label>
+                <a href="wordMaker.html"><button id="word-maker" value="Word maker">Make the word?</button></a>
+                <a href="wordGuesser.html"><button id="word-guesser" value="Word guesser">Guess the Word?</button></a>
+        </div>     
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal3 -->
+<div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header grey-back">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+       
+        <div class="modal-body center-text open">
+          <div id="continue">
+            <button>Continue</button>
+          </div>
+
+        </div>     
+        </div>
+      </div>
+    </div>
+
+    <!--the rest of the page-->
+
+    <div class="page-header text1">
+        <h1>Hang MAN</h1>
+        <button type="button" class="btn btn-primary" id="start-here">CLICK TO START</button>
+      </div>
+      
+      <div class="jumbotron box1">
+      
+      
+      <div class="panel panel-default text2">
+        <div class="panel-body">
+          <div class= "wins">Wins:
+          </div>
+          <div class="losses">Losses:
+              </div>
+        </div>
+      </div>
+      
+      <div class="panel panel-default text3">
+        <div class="panel-body">
+              <form id="word-form">
+                      <label for="word-input">The Word</label>
+                      <input type="text" id="word-input">
+                      <input type="button" id="add-word" value="Submit!">
+                  </form>
+          <!--THE WORD GOES HERE-->
+          <div id= "theWord">
+          </div>
+          <!--******************-->
+          <div id= "the-chosen-word-only-player-1-sees">
+            </div>
+      
+          <div class="guesses">Number of guesses remaining:<span id="guesses-remaining"></span>
+              </div>
+              <div id= "Wrong letters-guessed">Letters guessed:<span id="wrong_guesses"></span>
+              </div>
+        </div>
+      </div>
+
+      <div id="keyboard" class="panel panel-default text3">
+          <div class="panel-body">
+              <button id="Q" class="aButton" value="q">Q</button>
+              <button id="W" class="aButton" value="w">W</button>
+              <button id="E" class="aButton" value="e">E</button>
+              <button id="R" class="aButton" value="r">R</button>
+              <button id="T" class="aButton" value="t">T</button>
+              <button id="Y" class="aButton" value="y">Y</button>
+              <button id="U" class="aButton" value="u">U</button>
+              <button id="I" class="aButton" value="i">I</button>
+              <button id="O" class="aButton" value="o">O</button>
+              <button id="P" class="aButton" value="p">P</button>
+              <br>
+              <br>
+              <button id="A" class="aButton" value="a">A</button>
+              <button id="S" class="aButton" value="s">S</button>
+              <button id="D" class="aButton" value="d">D</button>
+              <button id="F" class="aButton" value="f">F</button>
+              <button id="G" class="aButton" value="g">G</button>
+              <button id="H" class="aButton" value="h">H</button>
+              <button id="J" class="aButton" value="j">J</button>
+              <button id="K" class="aButton" value="k">K</button>
+              <button id="L" class="aButton" value="l">L</button>
+              <br>
+              <br>
+              <button id="Z" class="aButton" value="z">Z</button>
+              <button id="X" class="aButton" value="x">X</button>
+              <button id="C" class="aButton" value="c">C</button>
+              <button id="V" class="aButton" value="v">V</button>
+              <button id="B" class="aButton" value="b">B</button>
+              <button id="N" class="aButton" value="n">N</button>
+              <button id="M" class="aButton" value="m">M</button>
+      
+          </div>
+        </div>
+      
+      </div>
+
+
+
+</body>
+</html>
