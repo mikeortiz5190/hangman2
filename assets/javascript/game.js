@@ -14,7 +14,7 @@ var splitWord=[];
 
 var lettersLeft=0;
 
-var guessesLeft=0;
+var guessesLeft=10;
 
 var hiddenWord=[];
 
@@ -138,7 +138,7 @@ $("#add-word").on('click', function(){
     console.log(splitWord.length);
     lettersLeft = splitWord.length;
     console.log(lettersLeft);
-    guessesLeft=lettersLeft+5;
+    guessesLeft=10;
 
     //UNDERSCORE SPLICING
     for ( var i = 0; i < splitWord.length; i++) {
@@ -197,7 +197,6 @@ $(".aButton").on('click', function(){
             });
             //$("#theWord").html("<p>" + hiddenWord + "<p>");  ->now done instead below
             if(lettersLeft === 0){
-                Winner();
                 break;
             }
         }
@@ -219,7 +218,7 @@ $(".aButton").on('click', function(){
                 else{
                     console.log( "you have "+ guessesLeft + " guesses left");
                     //$("#guesses-remaining").html( "<p>" + guessesLeft + "</p>" ); --> now done belorw instead
-                }   
+                }
             }
             else if (countDown === 0 && go_nogo == true){
                 break;   
@@ -261,7 +260,12 @@ database.ref("/players/word_guesser").on("value", function(snapshot){
     if(bb){
         var b = snapshot.val().guesses_left;
         console.log(b);
+
+
+
+
         $("#guesses-remaining").html("<p> " + b + " <p>");
+
     }
     else{
         $("#guesses-remaining").html("<p><p>");
@@ -278,6 +282,16 @@ database.ref("/players/word_guesser").on("value", function(snapshot){
     else{
         $("#wrong_guesses").html("<p><p>");
     }
+});
+
+database.ref("/players/word_guesser").on("value", function(snapshot){
+    var d = snapshot.val().letters_left;
+    var winner = snapshot.val().Name;
+
+    if (d===0){
+        $("#theWord").append().html("<h1>" +winner+" is the Winner!!!</h1>");
+    }
+
 });
 
 
