@@ -130,9 +130,9 @@ $("#continue").on('click', function(){
 
 //THE WORD IS SUBMIITED BY PLAYER 1 AND PLACED IN THE DATABASE AND SPLIT INTO AN ARRAY
 $("#add-word").on('click', function(){
-    $("#name-form").hide();
+    $("#word-form").hide();
     theWord = $("#word-input").val().trim();
-    $("the-chosen-word-only-player-1-sees").html("<h3>"+ theWord + "</h3>");
+    $("#the-chosen-word-only-player-1-sees").html("<h3>"+ theWord + "</h3>");
     splitWord = theWord.split("");
     console.log(splitWord);
     console.log(splitWord.length);
@@ -141,12 +141,11 @@ $("#add-word").on('click', function(){
     guessesLeft=lettersLeft+5;
 
     //UNDERSCORE SPLICING
-    hiddenWord = [];
     for ( var i = 0; i < splitWord.length; i++) {
         hiddenWord.push("_"); 
     };
     console.log(hiddenWord);
-    $("#theWord").html("<p>" + hiddenWord + "<p>");
+    //$("#theWord").html("<p>" + hiddenWord + "<p>"); triggers event function below for firebase
     //*********/
 
     database.ref("/players/word_maker").update({
@@ -160,7 +159,7 @@ $("#add-word").on('click', function(){
         hidden_word: hiddenWord
     });
     $("#guesses-remaining").html( "<p>" + guessesLeft + "</p>" );
-    return splitWord, lettersLeft, guessLeft, theWord, hiddenWord, WrongGuesses;
+    return splitWord, lettersLeft, guessesLeft, theWord, hiddenWord, wrongGuesses;
 });
 
 
@@ -181,14 +180,17 @@ $(".aButton").on('click', function(){
     database.ref("/players").once("value", function(snapshot){
     splitWord = snapshot.val().word_maker.The_splitted_word;
     hiddenWord = snapshot.val().word_guesser.hidden_word;
+    lettersLeft = snapshot.val().word_guesser.letters_left;
+    guessesLeft = snapshot.val().word_guesser.guesses_left;
 
     for (var i = 0; i < splitWord.length; i++){
-        console.log(splitWord[i]);
+        //console.log(splitWord[i]);
         if(letter === splitWord[i]){
             countDown = countDown-1;
             go_nogo = true;
             hiddenWord[i] = letter;
-            lettersLeft = lettersLeft-1;
+            lettersLeft--;
+            console.log(lettersLeft);
             database.ref("/players/word_guesser").update({
                 hidden_word: hiddenWord,
                 letters_left: lettersLeft
@@ -204,7 +206,7 @@ $(".aButton").on('click', function(){
             countDown = countDown-1;
             if (countDown === 0 && go_nogo == false){
                 //$("#guesses").append(letter); --> now done belorw instead
-                guessesLeft = guessesLeft-1;
+                guessesLeft--;
                 wrongGuesses.push(letter)
                 database.ref("/players/word_guesser").update({
                     wrong_guesses: wrongGuesses,
@@ -228,7 +230,7 @@ $(".aButton").on('click', function(){
     };
 })
     $(this).hide();
-    return splitWord, hiddenWord, lettersLeft, guessesLeft, guesses;
+    return splitWord, hiddenWord, lettersLeft, guessesLeft, wrongGuesses;
 });
 
 function GameOver(){
@@ -243,15 +245,39 @@ function Winner(){
 //REAL TIME UPDATES
 
 database.ref("/players/word_guesser").on("value", function(snapshot){
-    var a = snapshot.val().hidden_word;
-    var b = snapshot.val().guesses_left;
-    var c = snapshot.val().wrong_guesses;
-    console.log(a);
-    console.log(b);
-    console.log(c);
-    $("#theWord").html("<p> " + a + " <p>");
-    $("#guesses-remaining").html("<p> " + b + " <p>");
-    $("#wrong_guesses").html("<p> " + c + " <p>");
+    var aa=snapshot.child("hidden_word").exists();
+    if(aa){
+        var a = snapshot.val().hidden_word;
+        console.log(a);
+        $("#theWord").html("<p> " + a + " <p>");
+    }
+    else{
+        $("#theWord").html("<p><p>");
+    }
+});
+
+database.ref("/players/word_guesser").on("value", function(snapshot){
+    var bb=snapshot.child("guesses_left").exists();
+    if(bb){
+        var b = snapshot.val().guesses_left;
+        console.log(b);
+        $("#guesses-remaining").html("<p> " + b + " <p>");
+    }
+    else{
+        $("#guesses-remaining").html("<p><p>");
+    }
+});
+
+database.ref("/players/word_guesser").on("value", function(snapshot){
+    var cc=snapshot.child("wrong_guesses").exists();
+    if(cc){
+        var c = snapshot.val().wrong_guesses;
+        console.log(c);
+        $("#wrong_guesses").html("<p> " + c + " <p>");
+    }
+    else{
+        $("#wrong_guesses").html("<p><p>");
+    }
 });
 
 
